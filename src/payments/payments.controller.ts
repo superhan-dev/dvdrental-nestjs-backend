@@ -6,12 +6,14 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { PaymentEntity } from './entities/payment.entity';
+import { PaginationParamsDto } from 'src/pagination/pagination-params.dto';
 
 @Controller('payments')
 @ApiTags('payments')
@@ -26,8 +28,10 @@ export class PaymentsController {
 
   @Get()
   @ApiOkResponse({ type: PaymentEntity, isArray: true })
-  findAll() {
-    return this.paymentsService.findAll();
+  findAll(@Query() pagination: PaginationParamsDto) {
+    console.log('pagination', pagination);
+
+    return this.paymentsService.findAll(pagination);
   }
 
   @Get(':id')
